@@ -88,6 +88,7 @@ Usage in Analysis: Develop language-based recommendation systems for movie enthu
 Sensitivity: Not sensitive 
 
 Concise Tech Report
+
 How many data points are there in total? How many are there in each group you care about (e.g. if you are dividing your data into positive/negative examples, are they split evenly)?: There are 1106 rows and 23 columns giving us a total of 25,438 data points. Our data is completely populated meaning there are 23 data points per each movie.
 Aim for a resource of reasonable size. At least 700 records after cleaning and duplicate removal. Account that part of your data should be used for validation of your results only.: We have over 700 records after cleaning.
 Do you think this is enough data to perform your analysis later on?: We believe that this is more than enough data to perform analysis later on because we include a wide range of movies with varying popularities, genres, runtimes, production companies, release dates, profits, original languages, etc. meaning that we can test many different hypotheses with statistical significance.
