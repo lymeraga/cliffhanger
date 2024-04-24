@@ -3,7 +3,7 @@ import numpy as np
 import sqlite3
 import statsmodels.api as sm
 import matplotlib.pyplot as plt
-from scipy.stats import ttest_ind, chi2_contingency
+from scipy.stats import ttest_ind, ttest_1samp
 
 
 db_file_path = '/Users/lyraymeraga/Desktop/cs1951a/final-project-cliffhanger/db_data/Merged_Dataset.db'
@@ -33,55 +33,58 @@ df_non_english_language = pd.read_sql_query(sql_non_eng_query, conn)
 budget_column = 'budget'
 popularity_column = 'popularity_level'
 sql_high_pop_query = f"SELECT {budget_column} FROM joined_table WHERE {popularity_column} = 'High';"
-df_english_language = pd.read_sql_query(sql_high_pop_query, conn)
+df_high_pop_level = pd.read_sql_query(sql_high_pop_query, conn)
 
 #Access the budget for movies with Low popularity level
 sql_low_pop_query = f"SELECT {budget_column} FROM joined_table WHERE {popularity_column} = 'Low';"
-df_english_language = pd.read_sql_query(sql_low_pop_query, conn)
+df_low_popularity_level = pd.read_sql_query(sql_low_pop_query, conn)
+
+#Access movie ratings
+sql_vote_average = f"SELECT {vote_average_column} FROM joined_table;"
+df_vote_avg = pd.read_sql_query(sql_vote_average, conn)
 
 cursor.close()
 conn.close()
 
+# Hypothesis 1: One sample t-test
+vote_values = df_vote_avg.values.astype(float)
+t_statistic1, p_value1 = ttest_1samp(vote_values, 6.44)
+print(t_statistic1, p_value1)
+alpha = 0.05  
+if p_value1 < alpha:
+    print("Reject the null hypothesis: There is a significant difference between the mean of the vote values and the specified value of 6.44.")
+else:
+    print("Fail to reject the null hypothesis: There is no significant difference between the mean of the vote values and the specified value of 6.44.")
 
 
-# print(revenue_array)
-# print(runtime_array)
+# Hypothesis 2: Two sample t-test
+high_pop_array = df_high_pop_level['budget'].values.astype(float)
+low_pop_array = df_low_popularity_level['budget'].values.astype(float)
+t_statistic2, p_value2 = ttest_ind(high_pop_array, low_pop_array)
+print(t_statistic2, p_value2)
 
-# #Hypothesis 1: Linear regression code
-# revenue_array = df_revenue[revenue_column].values
-# runtime_array = df_runtime[runtime_column].values
-
-# df = pd.DataFrame({'revenue': revenue_array, 'runtime': runtime_array})
-# y = df['revenue'].astype(float)  # Dependent variable (revenue)
-# X = df['runtime'].astype(int)  # Independent variable (runtime)
-# X = sm.add_constant(X)
-
-# model = sm.OLS(y, X)
-
-# # Perform the regression
-# results = model.fit()
-
-# # Print regression summary
-# print(results.summary())
+alpha = 0.05  
+if p_value2 < alpha:
+    print("Reject the null hypothesis: There is a significant difference between the budgets of movies with low popularity and high popularity ratings.")
+else:
+    print("Fail to reject the null hypothesis: There is no significant difference between the budgets of movies with low popularity and high popularity ratings.")
 
 
-#Hypothesis 2: Chi Squared Test
+# Hypothesis 3: Two sample t-test
+english_array = df_english_language[vote_average_column].values.astype(float)
+non_english_array = df_non_english_language[vote_average_column].values.astype(float)
 
+print(english_array)
+print(non_english_array)
 
-# Hypothesis 3: Independent t test
-# english_array = df_english_language[vote_average_column].values.astype(float)
-# non_english_array = df_non_english_language[vote_average_column].values.astype(float)
+t_statistic3, p_value3 = ttest_ind(english_array, non_english_array)
 
-# print(english_array)
-# print(non_english_array)
+print("T-statistic:", t_statistic3)
+print("P-value:", p_value3)
 
-# t_statistic, p_value = ttest_ind(english_array, non_english_array)
+alpha = 0.05  
+if p_value3 < alpha:
+    print("Reject the null hypothesis: There is a significant difference between the average ratings of English and non-English movies.")
+else:
+    print("Fail to reject the null hypothesis: There is no significant difference between the average ratings of English and non-English movies.")
 
-# print("T-statistic:", t_statistic)
-# print("P-value:", p_value)
-
-# alpha = 0.05  
-# if p_value < alpha:
-#     print("Reject the null hypothesis: There is a significant difference between the average ratings of English and non-English movies.")
-# else:
-#     print("Fail to reject the null hypothesis: There is no significant difference between the average ratings of English and non-English movies.")
