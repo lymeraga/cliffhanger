@@ -11,26 +11,25 @@ conn = sqlite3.connect(db_file_path)
 cursor = conn.cursor()
 
 #Acess the revenue from our database
-revenue_column = 'revenue'
-sql_query = f"SELECT {revenue_column} FROM joined_table;"
-df_revenue = pd.read_sql_query(sql_query, conn)
+vote_count_column = 'vote_count'
+sql_vote_query = f"SELECT {vote_count_column} FROM joined_table;"
+df_vote_count = pd.read_sql_query(sql_vote_query, conn)
 
-#Access the runtime column from our database
-runtime_column = 'runtime'
-sql_query_two = f"SELECT {runtime_column} FROM joined_table;"
-df_runtime = pd.read_sql_query(sql_query_two, conn)
+#Access the budget column from our database
+vote_average_column = 'vote_average'
+sql_query_two = f"SELECT {vote_average_column} FROM joined_table;"
+df_vote_average = pd.read_sql_query(sql_query_two, conn)
 
 cursor.close()
 conn.close()
 
+# Machine Learning 1: Linear regression code
+vote_count_array = df_vote_count[vote_count_column].values
+vote_average_array = df_vote_average[vote_average_column].values
 
-# Hypothesis 1: Linear regression code
-revenue_array = df_revenue[revenue_column].values
-runtime_array = df_runtime[runtime_column].values
-
-df = pd.DataFrame({'revenue': revenue_array, 'runtime': runtime_array})
-y = df['revenue'].astype(float)  # Dependent variable (revenue)
-X = df['runtime'].astype(int)  # Independent variable (runtime)
+df = pd.DataFrame({'vote_count': vote_count_array, 'vote_average': vote_average_array})
+X = df['vote_count'].astype(float)  # Dependent variable (revenue)
+y = df['vote_average'].astype(float)  # Independent variable (budget)
 X = sm.add_constant(X)
 
 model = sm.OLS(y, X)
@@ -40,9 +39,13 @@ results = model.fit()
 
 # Print regression summary
 print(results.summary())
-# p_value1 = results.pvalues
-# alpha = 0.05  
-# if p_value1 < alpha:
-#     print("Reject the null hypothesis: There is a significant difference between the budgets of movies with low popularity and high popularity ratings.")
-# else:
-#     print("Fail to reject the null hypothesis: There is no significant difference between the budgets of movies with low popularity and high popularity ratings.")
+
+plt.figure(figsize=(10, 6))
+plt.scatter(X['vote_count'], y, label='Data Points')
+plt.plot(X['vote_count'], results.predict(), color='red', label='Regression Line')
+plt.xlabel('vote_count')
+plt.ylabel('vote_average')
+plt.title('Linear Regression: vote_average vs. vote_count')
+plt.legend()
+plt.grid(True)
+plt.show()
