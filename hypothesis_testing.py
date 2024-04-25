@@ -48,7 +48,7 @@ t_statistic1, p_value1 = ttest_1samp(vote_values, 7)
 print(t_statistic1, p_value1)
 alpha = 0.05  
 if p_value1 < alpha:
-    print("Reject the null hypothesis: There is a significant difference between the mean of the vote values and the specified value of 6.44.")
+    print("Reject the null hypothesis: There is a significant difference between the mean of the vote values and the specified value of 7.")
 else:
     print("Fail to reject the null hypothesis: There is no significant difference between the mean of the vote values and the specified value of 6.44.")
 
