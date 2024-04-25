@@ -1,10 +1,6 @@
 import pandas as pd
-import numpy as np
 import sqlite3
-import statsmodels.api as sm
-import matplotlib.pyplot as plt
 from scipy.stats import ttest_ind, ttest_1samp
-
 
 db_file_path = '/Users/lyraymeraga/Desktop/cs1951a/final-project-cliffhanger/db_data/Merged_Dataset.db'
 conn = sqlite3.connect(db_file_path)
@@ -48,7 +44,7 @@ conn.close()
 
 # Hypothesis 1: One sample t-test
 vote_values = df_vote_avg.values.astype(float)
-t_statistic1, p_value1 = ttest_1samp(vote_values, 6.44)
+t_statistic1, p_value1 = ttest_1samp(vote_values, 7)
 print(t_statistic1, p_value1)
 alpha = 0.05  
 if p_value1 < alpha:
@@ -74,8 +70,6 @@ else:
 english_array = df_english_language[vote_average_column].values.astype(float)
 non_english_array = df_non_english_language[vote_average_column].values.astype(float)
 
-print(english_array)
-print(non_english_array)
 
 t_statistic3, p_value3 = ttest_ind(english_array, non_english_array)
 
@@ -87,4 +81,3 @@ if p_value3 < alpha:
     print("Reject the null hypothesis: There is a significant difference between the average ratings of English and non-English movies.")
 else:
     print("Fail to reject the null hypothesis: There is no significant difference between the average ratings of English and non-English movies.")
-

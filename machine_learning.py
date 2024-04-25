@@ -1,12 +1,10 @@
 import pandas as pd
-import numpy as np
 import sqlite3
 import statsmodels.api as sm
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 from sklearn.preprocessing import LabelEncoder
@@ -16,14 +14,10 @@ from sklearn.metrics import ConfusionMatrixDisplay
 from statsmodels.tools import eval_measures
 from sklearn.metrics import r2_score
 
-
-
-
 db_file_path = '/Users/lyraymeraga/Desktop/cs1951a/final-project-cliffhanger/db_data/Merged_Dataset.db'
 conn = sqlite3.connect(db_file_path)
 cursor = conn.cursor()
 
-#REGRESSION SH*T
 #Access the VOTE COUNT column from our database
 vote_count_column = 'vote_count'
 sql_vote_count_query = f"SELECT {vote_count_column} FROM joined_table"
@@ -34,7 +28,6 @@ vote_average_column = 'vote_average'
 sql_vote_average_query = f"SELECT {vote_average_column} FROM joined_table"
 df_vote_average = pd.read_sql_query(sql_vote_average_query, conn)
 
-# DECISION TREE SH*T
 popularity_level_column = 'popularity_level'
 
 #Access PROFIT column from rows that have high or low popularity_level
@@ -57,8 +50,6 @@ df_filtered_vote_average = pd.read_sql_query(sql_filtered_vote_average_query, co
 sql_high_pop_query = f"SELECT {popularity_level_column} FROM joined_table WHERE {popularity_level_column} = 'High' OR {popularity_level_column} = 'Low';"
 df_high_and_low_pop_level = pd.read_sql_query(sql_high_pop_query, conn)
 
-
-
 cursor.close()
 conn.close()
 
@@ -75,7 +66,6 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
 X = sm.add_constant(X)
 X_train = sm.add_constant(X_train)
 X_test = sm.add_constant(X_test)
-
 
 print("values", X_train, X_test, y_train, y_test)
 model = sm.OLS(y, X)
@@ -105,7 +95,6 @@ plt.title('Linear Regression: vote_average vs. vote_count')
 plt.legend()
 plt.grid(True)
 plt.show()
-
 
 
 #Machine Learning 2:
