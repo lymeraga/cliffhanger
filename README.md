@@ -113,7 +113,7 @@ We kept all the data that was not redundant. However, if we already had some inf
 One observation we have made by collecting data is data redundancy. We have observed instances where duplicate records exist with the dataset, potentially affecting our analysis outcomes and hypothesis testing process. During our data cleaning process we identified and eliminated these duplicate entries, ensuring that each data point is represented accurately. The analysis we will perform remains the same as stated in the group project proposal since we have data that will allow us to test our hypothesis.
 
 
-
+Analysis Deliverable
 
 HYPOTHESIS 1
 

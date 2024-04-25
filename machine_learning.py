@@ -144,13 +144,13 @@ print(classification_report(y_test, y_pred))
 print("Confusion Matrix:")
 print(confusion_matrix(y_test, y_pred))
 
-conf_matrix = confusion_matrix(y_test, y_pred)
 
 # Map numerical labels to class names
 class_names = label_encoder.inverse_transform(dt_classifier.classes_)
 
 # Plot confusion matrix with class names
 plt.figure(figsize=(8, 6))
+conf_matrix = confusion_matrix(y_test, y_pred)
 disp = ConfusionMatrixDisplay(confusion_matrix=conf_matrix, display_labels=class_names)
 disp.plot(cmap=plt.cm.Blues)
 plt.title('Confusion Matrix')
