@@ -1,3 +1,3 @@
 ## cliffhanger
 
-![](./final%20deliverable/your-image.jpg)
+![](./final-deliverable/your-image.jpg)
